@@ -1,24 +1,14 @@
 import customtkinter
 import subprocess
-''' for normal tkinter
-import tkinter
-root = tkinter.Tk()
-label = tkinter.Label(root, )
-label.pack()
 
-entry1= customtkinter.CTkEntry(master=frame, placeholder_text="Username")
-entry1.pack(pady=12, padx=10)
-checkbox= customtkinter.CTkCheckBox(master=frame, text= "Remember Me")
-checkbox.pack(pady=12, padx=10)
-
-'''
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("green")
 root = customtkinter.CTk()
-root.geometry("500x350")
+root.geometry("700x500")
 statusOne=False
 statusTwo=False
 statusThree=False
+statusFour=False
 
 def activateOne():
     global statusOne
@@ -47,6 +37,15 @@ def activateThree():
         result = subprocess.run("raspi-gpio set 26 op pn dh", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         statusThree=True
 
+def activateFour():
+    global statusFour
+    if(statusFour==True):
+        result = subprocess.run("raspi-gpio set 21 op pn dl", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        statusFour=False    
+    else:
+        result = subprocess.run("raspi-gpio set 21 op pn dh", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        statusFour=True
+
 def colorOne():
     global statusOne, statusTwo, statusThree
 
@@ -72,20 +71,32 @@ label.pack(pady=12, padx=10)
 frame= customtkinter.CTkFrame(master=root)
 frame.pack(pady=20, padx=60, fill="both", expand=True)
 
-button=customtkinter.CTkButton(master=frame, text="Light One", command=activateOne)
-button.pack(pady=12, padx=10)
 
-button=customtkinter.CTkButton(master=frame, text="Light Two", command=activateTwo)
-button.pack(pady=12, padx=10)
+checkbox= customtkinter.CTkCheckBox(master=frame, text= "Multi Light: Red", font=("Merriweather", 20), command=activateOne)
+checkbox.grid(row=0, column=0, pady= 10, sticky="w")
+checkbox= customtkinter.CTkCheckBox(master=frame, text= "Multi Light: Green",  font=("Merriweather", 20), command=activateTwo )
+checkbox.grid(row=1, column=0, pady=10, sticky="w")
+checkbox= customtkinter.CTkCheckBox(master=frame, text= "Multi Light: Blue",  font=("Merriweather", 20), command=activateThree )
+checkbox.grid(row=2, column=0, pady=10, sticky="w")
+checkbox= customtkinter.CTkCheckBox(master=frame, text= "Basic Light", font=("Merriweather", 20), command=activateFour)
+checkbox.grid(row=3, column=0, pady=10, sticky="w")
 
-button=customtkinter.CTkButton(master=frame, text="Light Three", command=activateThree)
-button.pack(pady=12, padx=10)
+
+label=customtkinter.CTkLabel(master=frame, text="Multi Light: ", font=("Merriweather", 30))
+label.grid(pady=12, padx=10, sticky="w")
+
+label=customtkinter.CTkLabel(master=frame, text="Basic Light: ", font=("Merriweather", 30))
+label.grid(pady=12, padx=10, sticky="w")
+
 '''
-checkbox= customtkinter.CTkCheckBox(master=frame, text= "Light Three Option 1", command= )
-checkbox.pack(pady=12, padx=10)
-checkbox= customtkinter.CTkCheckBox(master=frame, text= "Light Three Option 2", command= )
-checkbox.pack(pady=12, padx=10)
-checkbox= customtkinter.CTkCheckBox(master=frame, text= "Light Three Option 3", command= )
-checkbox.pack(pady=12, padx=10)
+canvas = tk.Canvas(bg='#FAFAFA', selectforeground='#BBDEFB')
+    rectangle = canvas.create_rectangle((canvas.winfo_reqwidth() / 2) + 100,
+                                         (canvas.winfo_reqheight() / 2) + 50,
+                                         (canvas.winfo_reqwidth() / 2) + 150,
+                                         (canvas.winfo_reqheight() / 2) + 100,
+                                         fill='#FF4081', width=0)
+    canvas.grid()
+    color = canvas.itemcget(rectangle, "fill")
+    print(color)
 '''
 root.mainloop()
