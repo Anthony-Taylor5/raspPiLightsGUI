@@ -1,4 +1,5 @@
 import customtkinter
+import tkinter
 import subprocess
 
 customtkinter.set_appearance_mode("dark")
@@ -11,40 +12,47 @@ statusThree=False
 statusFour=False
 
 def activateOne():
-    global statusOne
+    global statusOne, canvasA
     if(statusOne==True):
         result = subprocess.run("raspi-gpio set 13 op pn dl", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         statusOne=False    
+        
     else:
         result = subprocess.run("raspi-gpio set 13 op pn dh", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         statusOne=True
+        canvasA.configure(bg="red")
 
 def activateTwo():
-    global statusTwo
+    global statusTwo, canvasA
     if(statusTwo==True):
         result = subprocess.run("raspi-gpio set 19 op pn dl", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         statusTwo=False
     else:
         result = subprocess.run("raspi-gpio set 19 op pn dh", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         statusTwo=True
+        canvasA.configure(bg="green")
 
 def activateThree():
-    global statusThree
+    global statusThree, canvasA
     if(statusThree==True):
         result = subprocess.run("raspi-gpio set 26 op pn dl", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         statusThree=False    
     else:
         result = subprocess.run("raspi-gpio set 26 op pn dh", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         statusThree=True
+        canvasA.configure(bg="blue")
 
 def activateFour():
-    global statusFour
+    global statusFour, canvasB
     if(statusFour==True):
         result = subprocess.run("raspi-gpio set 21 op pn dl", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         statusFour=False    
+        canvasB.configure(bg="black")
+        
     else:
         result = subprocess.run("raspi-gpio set 21 op pn dh", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         statusFour=True
+        canvasB.configure(bg="white")
 
 def colorOne():
     global statusOne, statusTwo, statusThree
@@ -83,20 +91,18 @@ checkbox.grid(row=3, column=0, pady=10, sticky="w")
 
 
 label=customtkinter.CTkLabel(master=frame, text="Multi Light: ", font=("Merriweather", 30))
-label.grid(pady=12, padx=10, sticky="w")
+label.grid(row=4, column=0,pady=12, padx=10, sticky="w")
 
 label=customtkinter.CTkLabel(master=frame, text="Basic Light: ", font=("Merriweather", 30))
-label.grid(pady=12, padx=10, sticky="w")
+label.grid(row=5, column=0,pady=12, padx=10, sticky="w")
 
-'''
-canvas = tk.Canvas(bg='#FAFAFA', selectforeground='#BBDEFB')
-    rectangle = canvas.create_rectangle((canvas.winfo_reqwidth() / 2) + 100,
-                                         (canvas.winfo_reqheight() / 2) + 50,
-                                         (canvas.winfo_reqwidth() / 2) + 150,
-                                         (canvas.winfo_reqheight() / 2) + 100,
-                                         fill='#FF4081', width=0)
-    canvas.grid()
-    color = canvas.itemcget(rectangle, "fill")
-    print(color)
-'''
+
+canvasA = customtkinter.CTkCanvas(master= frame, bg='black', width=300, height=50)
+canvasA.grid(row=4, column=3,pady=12, padx=10, sticky="e")
+
+canvasB = customtkinter.CTkCanvas(master= frame, bg='black',width=300, height =50)
+canvasB.grid(row=5, column=3,pady=12, padx=10, sticky="e")
+
+
+
 root.mainloop()
