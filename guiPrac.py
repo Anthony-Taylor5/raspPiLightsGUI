@@ -11,36 +11,65 @@ statusTwo=False
 statusThree=False
 statusFour=False
 
+def configureMultiLight(redStatus, greenStatus, blueStatus):
+    if(redStatus and greenStatus and blueStatus):
+            canvasA.configure(bg="teal")
+    elif(redStatus and blueStatus):
+        canvasA.configure(bg="purple")
+    elif(redStatus and greenStatus):
+        canvasA.configure(bg="#9ACD32")
+    elif(greenStatus and blueStatus):
+        canvasA.configure(bg="dark blue")
+    elif(redStatus):
+        canvasA.configure(bg="red")
+    elif(greenStatus):
+        canvasA.configure(bg="green")
+    elif(blueStatus):
+        canvasA.configure(bg="blue")
+    else:
+        canvasA.configure(bg="black")
+
+
+
 def activateOne():
-    global statusOne, canvasA
+    global statusOne,statusTwo, statusThree, canvasA
     if(statusOne==True):
         result = subprocess.run("raspi-gpio set 13 op pn dl", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        statusOne=False    
-        
+        statusOne=False        
+        configureMultiLight(statusOne, statusTwo, statusThree)
+
     else:
         result = subprocess.run("raspi-gpio set 13 op pn dh", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         statusOne=True
-        canvasA.configure(bg="red")
+        configureMultiLight(statusOne, statusTwo, statusThree)
 
 def activateTwo():
-    global statusTwo, canvasA
+    global statusOne,statusTwo, statusThree, canvasA
     if(statusTwo==True):
         result = subprocess.run("raspi-gpio set 19 op pn dl", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         statusTwo=False
+        configureMultiLight(statusOne, statusTwo, statusThree)
+
     else:
         result = subprocess.run("raspi-gpio set 19 op pn dh", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         statusTwo=True
-        canvasA.configure(bg="green")
+        configureMultiLight(statusOne, statusTwo, statusThree)
 
+ 
 def activateThree():
-    global statusThree, canvasA
+    global statusOne,statusTwo, statusThree, canvasA
     if(statusThree==True):
         result = subprocess.run("raspi-gpio set 26 op pn dl", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        statusThree=False    
+        statusThree=False
+        configureMultiLight(statusOne, statusTwo, statusThree)
+
+       
     else:
         result = subprocess.run("raspi-gpio set 26 op pn dh", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         statusThree=True
-        canvasA.configure(bg="blue")
+        configureMultiLight(statusOne, statusTwo, statusThree)
+
+        
 
 def activateFour():
     global statusFour, canvasB
@@ -48,14 +77,12 @@ def activateFour():
         result = subprocess.run("raspi-gpio set 21 op pn dl", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         statusFour=False    
         canvasB.configure(bg="black")
-        
     else:
         result = subprocess.run("raspi-gpio set 21 op pn dh", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         statusFour=True
         canvasB.configure(bg="white")
 
-def colorOne():
-    global statusOne, statusTwo, statusThree
+
 
 '''
 
@@ -81,13 +108,13 @@ frame.pack(pady=20, padx=60, fill="both", expand=True)
 
 
 checkbox= customtkinter.CTkCheckBox(master=frame, text= "Multi Light: Red", font=("Merriweather", 20), command=activateOne)
-checkbox.grid(row=0, column=0, pady= 10, sticky="w")
+checkbox.grid(row=0, column=0, pady= 10,padx=10, sticky="w")
 checkbox= customtkinter.CTkCheckBox(master=frame, text= "Multi Light: Green",  font=("Merriweather", 20), command=activateTwo )
-checkbox.grid(row=1, column=0, pady=10, sticky="w")
+checkbox.grid(row=1, column=0, pady=10, padx=10, sticky="w")
 checkbox= customtkinter.CTkCheckBox(master=frame, text= "Multi Light: Blue",  font=("Merriweather", 20), command=activateThree )
-checkbox.grid(row=2, column=0, pady=10, sticky="w")
+checkbox.grid(row=2, column=0, pady=10, padx=10, sticky="w")
 checkbox= customtkinter.CTkCheckBox(master=frame, text= "Basic Light", font=("Merriweather", 20), command=activateFour)
-checkbox.grid(row=3, column=0, pady=10, sticky="w")
+checkbox.grid(row=3, column=0, pady=10, padx=10, sticky="w")
 
 
 label=customtkinter.CTkLabel(master=frame, text="Multi Light: ", font=("Merriweather", 30))
